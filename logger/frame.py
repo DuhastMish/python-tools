@@ -3,7 +3,7 @@
 """
 import inspect
 
-from lib.logger.main import get_logger
+from python_utils.logger.main import get_logger
 
 LOGGER = get_logger()
 
