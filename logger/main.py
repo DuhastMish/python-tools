@@ -11,7 +11,7 @@ from http.client import HTTPConnection
 from pathlib import Path
 from typing import Any, Callable, ParamSpec, TypeVar
 
-from lib.helper.datetime import MILISECONDS_IN_SECOND, date_to_str
+from python_utils.helper.datetime import MILISECONDS_IN_SECOND, date_to_str
 
 CALL_BEGIN = 'Method call "{method}".'
 CALL_ERROR = 'Error while executing "{method}":\n\r{trace}'
