@@ -99,7 +99,7 @@ def log_method(func: Callable[P, T] | None = None) -> Callable[P, T]:
     return decorate(func) if func is not None else decorate
 
 
-async def zip_logs() -> Path:
+async def zip_logs() -> str:
     """
     Zip logs.
     """
