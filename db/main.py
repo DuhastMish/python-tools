@@ -6,7 +6,7 @@
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
-from python_utils.db.config import DatabaseConfiguration
+from python_utils.db.base import BaseDatabaseConnector
 from python_utils.helper.list import get_first_elem
 from python_utils.helper.string import remove_spaces
 from python_utils.logger.main import get_logger, log_method
@@ -14,17 +14,13 @@ from python_utils.logger.main import get_logger, log_method
 LOGGER = get_logger()
 
 
-class DatabaseConnector:
+class DatabaseConnector(BaseDatabaseConnector):
     """
     Класс выполнения запросов к базе данных.
     """
 
     def __init__(self):
-        self.host = DatabaseConfiguration.HOST
-        self.username = DatabaseConfiguration.USERNAME
-        self.password = DatabaseConfiguration.PASSWORD
-        self.port = DatabaseConfiguration.PORT
-        self.dbname = DatabaseConfiguration.NAME
+        super().__init__()
 
         self._conn = None
 
