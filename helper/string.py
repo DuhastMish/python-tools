@@ -10,12 +10,11 @@ from python_utils.helper.list import get_elem
 
 def plural_word(value: int, words: list) -> str:
     """
-    Получение множественной формы слова
+    Получение множественной формы слова.
 
     :param value:
     :return:
     """
-    # TODO: Сделать другим способом
     if all((value % 10 == 1, value % 100 != 11)):
         return get_elem(words, 0, "")
     elif all((2 <= value % 10 <= 4, any((value % 100 < 10, value % 100 >= 20)))):

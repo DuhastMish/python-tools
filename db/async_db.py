@@ -6,7 +6,6 @@ import psycopg
 from psycopg.rows import dict_row
 
 from python_utils.db.base import BaseDatabaseConnector
-from python_utils.helper.list import get_first_elem
 from python_utils.helper.string import remove_spaces
 from python_utils.logger.main import get_logger, log_method
 
@@ -80,10 +79,9 @@ class AsyncDatabaseConnector(BaseDatabaseConnector):
                 try:
                     LOGGER.debug(remove_spaces(query))
                     await cursor.execute(query)
-                    record_set = await cursor.fetchone()
-                    elem = get_first_elem(record_set)
-                    LOGGER.debug(f"RESULT fetchone: {elem}")
-                    return elem
+                    record = await cursor.fetchone()
+                    LOGGER.debug(f"RESULT fetchone: {record}")
+                    return record
                 except Exception as ex:
                     LOGGER.warn(f"{query}")
                     LOGGER.fatal(f"Error executing SQL: {ex}")
