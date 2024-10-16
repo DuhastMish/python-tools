@@ -2,8 +2,8 @@
 Класс подключения к базе данных.
 """
 
-
 import psycopg2
+from environs import Env
 from psycopg2.extras import RealDictCursor
 
 from python_utils.db.base import BaseDatabaseConnector
@@ -11,6 +11,8 @@ from python_utils.helper.list import get_first_elem
 from python_utils.helper.string import remove_spaces
 from python_utils.logger.main import get_logger, log_method
 
+env = Env()
+env.read_env()
 LOGGER = get_logger()
 
 
@@ -41,6 +43,7 @@ class DatabaseConnector(BaseDatabaseConnector):
         with self.connection as conn:
             with conn.cursor() as cursor:
                 try:
+                    cursor.execute("SET search_path TO " + env("DB_SCHEMA") or "public")
                     LOGGER.debug(remove_spaces(query))
                     cursor.execute(query)
                     record_set = list(cursor.fetchall())
@@ -113,6 +116,7 @@ class DatabaseConnector(BaseDatabaseConnector):
                 password=self.password,
                 port=self.port,
                 dbname=self.dbname,
+                options="-c search_path=dbo," + (env("DB_SCHEMA") or "public"),
             )
         except psycopg2.DatabaseError as ex:
             LOGGER.critical("Ошибка подключения к БД", exc_info=True)
