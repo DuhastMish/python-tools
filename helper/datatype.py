@@ -56,8 +56,74 @@ def to_int(value: Any) -> int | None:
 
 def to_str(value: Any) -> str:
     """
-    Очистить строку - удалить пробелы в начале и конце
+    Очистить строку - удалить пробелы в начале и конце.
     :param value:
     :return:
     """
     return str(value).strip() if value is not None else ""
+
+
+def as_array(value, force: bool = True) -> list:
+    """
+    Привести значение к списку.
+    :param value: исходное значение
+    :param force: пропускать значенние, если невозможно привести к типу
+    :return:
+    """
+    if isinstance(value, (list, tuple, set)):
+        return list(value)
+    elif value is None and force:
+        return []
+    else:
+        return [value]
+
+
+def to_array(value, to_type: type = None, force: bool = False) -> list:
+    """
+    Привести значение к массиву (определенного типа).
+    :param value: исходное значение
+    :param to_type: тип
+    :type to_type: type
+    :param force: пропускать значенние, если невозможно привести к типу
+    """
+    result = as_array(value)
+    result = list_cast(result, to_type, force)
+    return result
+
+
+def list_cast(value: list, to_type: type, force: bool = False) -> list:
+    """
+    Приведение элементов списка к определенному типу.
+    :param value: список
+    :param to_type: тип
+    :type to_type: type
+    :param force: пропускать значения, которые не получается привести
+    """
+    if not to_type:
+        return value
+
+    result = []
+    for item in value:
+        try:
+            item = cast(item, to_type)
+            result.append(item)
+        except Exception:
+            if not force:
+                raise
+
+    return result
+
+
+def cast(value, to_type: type):
+    """
+    Приведение к нужному типу
+    :param value: исходное значение
+    :param to_type: тип
+    :type to_type: type
+    """
+    try:
+        value = to_type(value)
+    except (ValueError, TypeError):
+        raise
+
+    return value
