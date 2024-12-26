@@ -30,7 +30,7 @@ class AsyncDatabaseConnector(BaseDatabaseConnector):
         }
 
     @log_method
-    async def select(self, query) -> list[dict]:
+    async def select(self, query, db_schema: str | None = None) -> list[dict]:
         """
         Выполняет запрос SELECT и возвращает результат в виде списока словарей.
         """
@@ -39,6 +39,8 @@ class AsyncDatabaseConnector(BaseDatabaseConnector):
             async with aconn.cursor() as cursor:
                 try:
                     LOGGER.debug(remove_spaces(query))
+                    if db_schema:
+                        await cursor.execute("SET search_path TO " + db_schema)
                     await cursor.execute(query)
                     record_set = await cursor.fetchall()
                     LOGGER.debug(f"RESULT (select): {record_set}")
@@ -51,7 +53,7 @@ class AsyncDatabaseConnector(BaseDatabaseConnector):
         await aconn.close()
 
     @log_method
-    async def execute(self, query: str):
+    async def execute(self, query: str, db_schema: str | None = None):
         """
         Выполняет запрос без возврата значения.
         """
@@ -60,6 +62,8 @@ class AsyncDatabaseConnector(BaseDatabaseConnector):
             async with aconn.cursor() as cursor:
                 try:
                     LOGGER.debug(remove_spaces(query))
+                    if db_schema:
+                        await cursor.execute("SET search_path TO " + db_schema)
                     await cursor.execute(query)
                 except Exception as ex:
                     LOGGER.warn(f"{query}")
@@ -69,7 +73,7 @@ class AsyncDatabaseConnector(BaseDatabaseConnector):
         await aconn.close()
 
     @log_method
-    async def select_one(self, query):
+    async def select_one(self, query, db_schema: str | None = None):
         """
         Выполняет запрос возвращает единственное значение.
         """
@@ -78,6 +82,8 @@ class AsyncDatabaseConnector(BaseDatabaseConnector):
             async with aconn.cursor() as cursor:
                 try:
                     LOGGER.debug(remove_spaces(query))
+                    if db_schema:
+                        await cursor.execute("SET search_path TO " + db_schema)
                     await cursor.execute(query)
                     record = await cursor.fetchone()
                     LOGGER.debug(f"RESULT fetchone: {record}")
