@@ -18,3 +18,4 @@ class DatabaseConfiguration:
     USERNAME = env("DB_USER")
     PASSWORD = env("DB_PASSWORD")
     NAME = env("DB_NAME")
+    SCHEMA = env("DB_SCHEMA")

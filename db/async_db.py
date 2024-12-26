@@ -34,6 +34,7 @@ class AsyncDatabaseConnector(BaseDatabaseConnector):
         """
         Выполняет запрос SELECT и возвращает результат в виде списока словарей.
         """
+        db_schema = db_schema or self.db_schema
         aconn = await psycopg.AsyncConnection.connect(**self._connection_kwargs)
         async with aconn:
             async with aconn.cursor() as cursor:
@@ -57,6 +58,7 @@ class AsyncDatabaseConnector(BaseDatabaseConnector):
         """
         Выполняет запрос без возврата значения.
         """
+        db_schema = db_schema or self.db_schema
         aconn = await psycopg.AsyncConnection.connect(**self._connection_kwargs)
         async with aconn:
             async with aconn.cursor() as cursor:
@@ -77,6 +79,7 @@ class AsyncDatabaseConnector(BaseDatabaseConnector):
         """
         Выполняет запрос возвращает единственное значение.
         """
+        db_schema = db_schema or self.db_schema
         aconn = await psycopg.AsyncConnection.connect(**self._connection_kwargs)
         async with aconn:
             async with aconn.cursor() as cursor:
