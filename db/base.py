@@ -20,4 +20,4 @@ class BaseDatabaseConnector:
         self.password = DatabaseConfiguration.PASSWORD
         self.port = DatabaseConfiguration.PORT
         self.dbname = DatabaseConfiguration.NAME
-        self.db_schema = DatabaseConfiguration.DB_SCHEMA
+        self.db_schema = DatabaseConfiguration.SCHEMA
