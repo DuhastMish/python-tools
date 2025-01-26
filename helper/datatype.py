@@ -49,7 +49,6 @@ def to_int(value: Any) -> int | None:
         result = int(value)
     except Exception as ex:
         LOGGER.error(f"Не удалось привести строку к int: {ex}", exc_info=True)
-        log_current_frame()
 
     return result
 
